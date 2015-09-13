@@ -22,7 +22,7 @@ static void update_time() {
   struct tm *tick_time = localtime(&temp_time);
 
   // Format time to strings
-  strftime(s_week_year_buffer, sizeof(s_week_year_buffer), "Week %W / %Y", tick_time);
+  strftime(s_week_year_buffer, sizeof(s_week_year_buffer), "Week %V / %Y", tick_time);
   strftime(s_time_buffer, sizeof(s_time_buffer), "%H:%M", tick_time);
   strftime(s_date_buffer, sizeof(s_date_buffer), "%e %B", tick_time);
   strftime(s_day_buffer, sizeof(s_day_buffer), "%A", tick_time);
