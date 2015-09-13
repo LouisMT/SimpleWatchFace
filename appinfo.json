@@ -1,0 +1,23 @@
+{
+    "appKeys": {},
+    "capabilities": [
+        ""
+    ],
+    "companyName": "U5R",
+    "longName": "SimpleWatchFace",
+    "projectType": "native",
+    "resources": {
+        "media": []
+    },
+    "sdkVersion": "3",
+    "shortName": "SimpleWatchFace",
+    "targetPlatforms": [
+        "aplite",
+        "basalt"
+    ],
+    "uuid": "4335c1d9-7477-4a86-b7d3-d206dd7a7aad",
+    "versionLabel": "1.0",
+    "watchapp": {
+        "watchface": true
+    }
+}
