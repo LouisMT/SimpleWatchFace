@@ -65,6 +65,7 @@ static void update_bluetooth() {
 }
 
 void bluetooth_handler(bool connected) {
+  vibes_double_pulse();
   update_bluetooth();
 }
 
