@@ -27,6 +27,11 @@ static void update_time() {
   strftime(s_date_buffer, sizeof(s_date_buffer), "%e %B", tick_time);
   strftime(s_day_buffer, sizeof(s_day_buffer), "%A", tick_time);
 
+  // Add some leet if necessary
+  if (strcmp(s_time_buffer, "13:37") == 0) {
+    strncpy(s_time_buffer, "LEET!", sizeof(s_time_buffer));
+  }
+
   // Update the display
   text_layer_set_text(s_week_year_layer, s_week_year_buffer);
   text_layer_set_text(s_time_layer, s_time_buffer);
@@ -143,6 +148,10 @@ static void init() {
 }
 
 static void deinit() {
+  tick_timer_service_unsubscribe();
+  battery_state_service_unsubscribe();
+  bluetooth_connection_service_unsubscribe();
+
   window_destroy(s_main_window);
 }
 
