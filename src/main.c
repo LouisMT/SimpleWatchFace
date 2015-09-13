@@ -100,7 +100,7 @@ static void space_layer_draw(Layer *layer, GContext *ctx) {
   graphics_fill_rect(ctx, bounds, 0, GCornerNone);
 }
 
-static void add_space_layers(Window *window, Layer *root_layer) {
+static void add_space_layers(Layer *root_layer) {
   // Create space for week/year layer
   s_week_year_space_layer = layer_create(GRect(0, 0, 4, 19));
   layer_set_update_proc(s_week_year_space_layer, space_layer_draw);
@@ -174,7 +174,7 @@ static void main_window_load(Window *window) {
   layer_add_child(root_layer, text_layer_get_layer(s_bluetooth_layer));
 
   // Add the space layers
-  add_space_layers(window, root_layer);
+  add_space_layers(root_layer);
   
   // Initial update for display
   update_time();
