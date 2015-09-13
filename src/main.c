@@ -100,73 +100,81 @@ static void space_layer_draw(Layer *layer, GContext *ctx) {
   graphics_fill_rect(ctx, bounds, 0, GCornerNone);
 }
 
-static void add_space_layers(Window *window) {
+static void add_space_layers(Window *window, Layer *root_layer) {
   // Create space for week/year layer
   s_week_year_space_layer = layer_create(GRect(0, 0, 4, 19));
   layer_set_update_proc(s_week_year_space_layer, space_layer_draw);
-  layer_add_child(window_get_root_layer(window), s_week_year_space_layer);
+  layer_add_child(root_layer, s_week_year_space_layer);
   
   // Create space for battery layer
   s_battery_space_layer = layer_create(GRect(140, 0, 4, 19));
   layer_set_update_proc(s_battery_space_layer, space_layer_draw);
-  layer_add_child(window_get_root_layer(window), s_battery_space_layer);
+  layer_add_child(root_layer, s_battery_space_layer);
   
   // Create space for day layer
   s_day_space_layer = layer_create(GRect(0, 149, 4, 19));
   layer_set_update_proc(s_day_space_layer, space_layer_draw);
-  layer_add_child(window_get_root_layer(window), s_day_space_layer);
+  layer_add_child(root_layer, s_day_space_layer);
   
   // Create space for bluetooth layer
   s_bluetooth_space_layer = layer_create(GRect(140, 149, 4, 19));
   layer_set_update_proc(s_bluetooth_space_layer, space_layer_draw);
-  layer_add_child(window_get_root_layer(window), s_bluetooth_space_layer);
+  layer_add_child(root_layer, s_bluetooth_space_layer);
 }
 
 static void main_window_load(Window *window) {
+  // Get the root layer for all new layers
+  Layer *root_layer = window_get_root_layer(window);
+
+  // Get the fonts to be used
+  GFont gothic_14_font = fonts_get_system_font(FONT_KEY_GOTHIC_14);
+  GFont bitham_42_light_font = fonts_get_system_font(FONT_KEY_BITHAM_42_LIGHT);
+  GFont gothic_24_font = fonts_get_system_font(FONT_KEY_GOTHIC_24);
+  
   // Create week/year layer
   s_week_year_layer = text_layer_create(GRect(4, 0, 107, 19));
   text_layer_set_background_color(s_week_year_layer, GColorBlack);
   text_layer_set_text_color(s_week_year_layer, GColorWhite);
-  text_layer_set_font(s_week_year_layer, fonts_get_system_font(FONT_KEY_GOTHIC_14));
-  layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_week_year_layer));
+  text_layer_set_font(s_week_year_layer, gothic_14_font);
+  layer_add_child(root_layer, text_layer_get_layer(s_week_year_layer));
 
   // Create battery layer
   s_battery_layer = text_layer_create(GRect(111, 0, 29, 19));
   text_layer_set_background_color(s_battery_layer, GColorBlack);
   text_layer_set_text_color(s_battery_layer, GColorWhite);
-  text_layer_set_font(s_battery_layer, fonts_get_system_font(FONT_KEY_GOTHIC_14));
+  text_layer_set_font(s_battery_layer, gothic_14_font);
   text_layer_set_text_alignment(s_battery_layer, GTextAlignmentRight);
-  layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_battery_layer));
+  layer_add_child(root_layer, text_layer_get_layer(s_battery_layer));
 
   // Create time layer
   s_time_layer = text_layer_create(GRect(0, 41, 144, 50));
-  text_layer_set_font(s_time_layer, fonts_get_system_font(FONT_KEY_BITHAM_42_LIGHT));
+  text_layer_set_font(s_time_layer, bitham_42_light_font);
   text_layer_set_text_alignment(s_time_layer, GTextAlignmentCenter);
-  layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_time_layer));
+  layer_add_child(root_layer, text_layer_get_layer(s_time_layer));
 
   // Create date layer
   s_date_layer = text_layer_create(GRect(0, 91, 144, 32));
-  text_layer_set_font(s_date_layer, fonts_get_system_font(FONT_KEY_GOTHIC_24));
+  text_layer_set_font(s_date_layer, gothic_24_font);
   text_layer_set_text_alignment(s_date_layer, GTextAlignmentCenter);
-  layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_date_layer));
+  layer_add_child(root_layer, text_layer_get_layer(s_date_layer));
 
   // Create day layer
   s_day_layer = text_layer_create(GRect(4, 149, 107, 19));
   text_layer_set_background_color(s_day_layer, GColorBlack);
   text_layer_set_text_color(s_day_layer, GColorWhite);
-  text_layer_set_font(s_day_layer, fonts_get_system_font(FONT_KEY_GOTHIC_14));
-  layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_day_layer));
+  text_layer_set_font(s_day_layer, gothic_14_font);
+  layer_add_child(root_layer, text_layer_get_layer(s_day_layer));
 
   // Create bluetooth layer
   s_bluetooth_layer = text_layer_create(GRect(111, 149, 29, 19));
   text_layer_set_background_color(s_bluetooth_layer, GColorBlack);
   text_layer_set_text_color(s_bluetooth_layer, GColorWhite);
-  text_layer_set_font(s_bluetooth_layer, fonts_get_system_font(FONT_KEY_GOTHIC_14));
+  text_layer_set_font(s_bluetooth_layer, gothic_14_font);
   text_layer_set_text_alignment(s_bluetooth_layer, GTextAlignmentRight);
-  layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_bluetooth_layer));
+  layer_add_child(root_layer, text_layer_get_layer(s_bluetooth_layer));
 
   // Add the space layers
-  add_space_layers(window);
+  add_space_layers(window, root_layer);
   
   // Initial update for display
   update_time();
@@ -215,7 +223,7 @@ static void deinit() {
   window_destroy(s_main_window);
 }
 
-int main(void) {
+int main() {
   init();
   app_event_loop();
   deinit();
