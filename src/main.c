@@ -3,13 +3,6 @@
 // The main window
 static Window *s_main_window;
 
-// The space layers
-// These create some padding for the status bar text
-static Layer *s_week_year_space_layer;
-static Layer *s_battery_space_layer;
-static Layer *s_day_space_layer;
-static Layer *s_bluetooth_space_layer;
-
 // The text layers
 // These display the actual information
 static TextLayer *s_week_year_layer;
@@ -18,6 +11,13 @@ static TextLayer *s_time_layer;
 static TextLayer *s_date_layer;
 static TextLayer *s_day_layer;
 static TextLayer *s_bluetooth_layer;
+
+// The space layers
+// These create some padding for the status bar text
+static Layer *s_week_year_space_layer;
+static Layer *s_battery_space_layer;
+static Layer *s_day_space_layer;
+static Layer *s_bluetooth_space_layer;
 
 // The buffers
 // These contain the text for the text layers
