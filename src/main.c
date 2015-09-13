@@ -14,7 +14,7 @@ static char s_battery_buffer[5];
 static char s_time_buffer[6];
 static char s_date_buffer[13];
 static char s_day_buffer[10];
-static char s_bluetooth_buffer[5];
+static char s_bluetooth_buffer[7];
 
 static void update_time() {
   // Get current time
@@ -56,9 +56,9 @@ static void battery_handler(BatteryChargeState charge_state) {
 
 static void update_bluetooth() {
   if (bluetooth_connection_service_peek()) {
-    strncpy(s_bluetooth_buffer, "BT:C", sizeof(s_bluetooth_buffer));
+    strncpy(s_bluetooth_buffer, "BT on", sizeof(s_bluetooth_buffer));
   } else {
-    strncpy(s_bluetooth_buffer, "BT:D", sizeof(s_bluetooth_buffer));
+    strncpy(s_bluetooth_buffer, "BT off", sizeof(s_bluetooth_buffer));
   }
 
   text_layer_set_text(s_bluetooth_layer, s_bluetooth_buffer);
@@ -97,14 +97,14 @@ static void main_window_load(Window *window) {
   layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_date_layer));
 
   // Create day layer
-  s_day_layer = text_layer_create(GRect(0, 148, 122, 20));
+  s_day_layer = text_layer_create(GRect(0, 148, 115, 20));
   text_layer_set_background_color(s_day_layer, GColorBlack);
   text_layer_set_text_color(s_day_layer, GColorWhite);
   text_layer_set_font(s_day_layer, fonts_get_system_font(FONT_KEY_GOTHIC_14));
   layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_day_layer));
 
   // Create bluetooth layer
-  s_bluetooth_layer = text_layer_create(GRect(122, 148, 22, 20));
+  s_bluetooth_layer = text_layer_create(GRect(115, 148, 29, 20));
   text_layer_set_background_color(s_bluetooth_layer, GColorBlack);
   text_layer_set_text_color(s_bluetooth_layer, GColorWhite);
   text_layer_set_font(s_bluetooth_layer, fonts_get_system_font(FONT_KEY_GOTHIC_14));
