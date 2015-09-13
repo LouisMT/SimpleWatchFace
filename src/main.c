@@ -183,6 +183,12 @@ static void main_window_load(Window *window) {
 }
 
 static void main_window_unload(Window *window) {
+  // Destroy all space layers to free resources
+  layer_destroy(s_week_year_space_layer);
+  layer_destroy(s_battery_space_layer);
+  layer_destroy(s_day_space_layer);
+  layer_destroy(s_bluetooth_space_layer);
+  
   // Destroy all layers to free resources
   text_layer_destroy(s_week_year_layer);
   text_layer_destroy(s_battery_layer);
