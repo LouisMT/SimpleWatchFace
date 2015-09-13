@@ -10,7 +10,8 @@ This is a simple watch face for the Pebble (both the original Pebble and the Peb
 * LEET at 13:37
 
 ## Installation
-Simply download the latest release [here](https://github.com/Naxiz/SimpleWatchFace/releases) (the `.pbw` file) and transfer it to your phone. Then open the file using the Pebble app.
+1. Simply download the latest release [here](https://github.com/Naxiz/SimpleWatchFace/releases) (the `.pbw` file) and transfer it to your phone.
+2. Then open the file using the Pebble app.
 
 ## Contributing
 Pull Requests are always welcome, even the smallest ones!
