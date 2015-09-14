@@ -1,9 +1,7 @@
 #include <pebble.h>
 
-// The main window
 static Window *s_main_window;
 
-// The text layers
 // These display the actual information
 static TextLayer *s_week_year_layer;
 static TextLayer *s_battery_layer;
@@ -12,29 +10,21 @@ static TextLayer *s_date_layer;
 static TextLayer *s_day_layer;
 static TextLayer *s_bluetooth_layer;
 
-// The space layers
 // These create some padding for the status bar text
 static Layer *s_week_year_space_layer;
 static Layer *s_battery_space_layer;
 static Layer *s_day_space_layer;
 static Layer *s_bluetooth_space_layer;
 
-// The buffers
-// These contain the text for the text layers
-static char s_week_year_buffer[15];
-static char s_battery_buffer[5];
-static char s_time_buffer[6];
-static char s_date_buffer[13];
-static char s_day_buffer[10];
-static char s_bluetooth_buffer[7];
-
-static void update_time() {
-  // Get current time
-  time_t temp_time = time(NULL); 
-  struct tm *tick_time = localtime(&temp_time);
-
+static void tick_handler(struct tm *tick_time, TimeUnits units_changed) {
+  // Declare buffers to hold the formatted strings
+  static char s_week_year_buffer[12];
+  static char s_time_buffer[6];
+  static char s_date_buffer[13];
+  static char s_day_buffer[10];
+  
   // Format time to strings
-  strftime(s_week_year_buffer, sizeof(s_week_year_buffer), "Week %V / %Y", tick_time);
+  strftime(s_week_year_buffer, sizeof(s_week_year_buffer), "Week %V '%y", tick_time);
   strftime(s_time_buffer, sizeof(s_time_buffer), "%H:%M", tick_time);
   strftime(s_date_buffer, sizeof(s_date_buffer), "%e %B", tick_time);
   strftime(s_day_buffer, sizeof(s_day_buffer), "%A", tick_time);
@@ -52,14 +42,10 @@ static void update_time() {
   text_layer_set_text(s_day_layer, s_day_buffer);
 }
 
-static void tick_handler(struct tm *tick_time, TimeUnits units_changed) {
-  update_time();
-}
-
-static void update_battery() {
-  // Get the battery status
-  BatteryChargeState charge_state = battery_state_service_peek();
-
+static void battery_handler(BatteryChargeState charge_state) {
+  // Declare buffer to hold the formatted string
+  static char s_battery_buffer[5];
+  
   // Format the status to string
   if (charge_state.is_charging) {
     snprintf(s_battery_buffer, sizeof(s_battery_buffer), "CHRG");
@@ -71,26 +57,12 @@ static void update_battery() {
   text_layer_set_text(s_battery_layer, s_battery_buffer);
 }
 
-static void battery_handler(BatteryChargeState charge_state) {
-  update_battery();
-}
-
-static void update_bluetooth() {
-  // Get the bluetooth status, and format the status to string
-  if (bluetooth_connection_service_peek()) {
-    strncpy(s_bluetooth_buffer, "BT on", sizeof(s_bluetooth_buffer));
-  } else {
-    strncpy(s_bluetooth_buffer, "BT off", sizeof(s_bluetooth_buffer));
-  }
-
-  // Update the display
-  text_layer_set_text(s_bluetooth_layer, s_bluetooth_buffer);
-}
-
 void bluetooth_handler(bool connected) {
   // Vibrate briefly twice on bluetooth status change
   vibes_double_pulse();
-  update_bluetooth();
+
+  // Update the display
+  text_layer_set_text(s_bluetooth_layer, connected ? "BT on" : "BT off");
 }
 
 static void space_layer_draw(Layer *layer, GContext *ctx) {
@@ -177,10 +149,16 @@ static void main_window_load(Window *window) {
   // Add the space layers
   add_space_layers(root_layer);
   
-  // Initial update for display
-  update_time();
-  update_battery();
-  update_bluetooth();
+  // Initial update for time
+  time_t temp_time = time(NULL); 
+  struct tm *tick_time = localtime(&temp_time);
+  tick_handler(tick_time, MINUTE_UNIT);
+  // Initial update for battery
+  BatteryChargeState charge_state = battery_state_service_peek();
+  battery_handler(charge_state);
+  // Initial update for bluetooth
+  bool connected = bluetooth_connection_service_peek();
+  bluetooth_handler(connected);
 }
 
 static void main_window_unload(Window *window) {
