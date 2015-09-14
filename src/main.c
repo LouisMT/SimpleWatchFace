@@ -41,6 +41,7 @@ static void update_time() {
 
   // Add some leet if necessary
   if (strcmp(s_time_buffer, "13:37") == 0) {
+    vibes_short_pulse();
     strncpy(s_time_buffer, "LEET!", sizeof(s_time_buffer));
   }
 
