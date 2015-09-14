@@ -16,6 +16,9 @@ static Layer *s_battery_space_layer;
 static Layer *s_day_space_layer;
 static Layer *s_bluetooth_space_layer;
 
+// Remember if bluetooth handler call is initial
+static bool bluetooth_handler_init = true;
+
 static void tick_handler(struct tm *tick_time, TimeUnits units_changed) {
   // Declare buffers to hold the formatted strings
   static char s_week_year_buffer[12];
@@ -58,8 +61,12 @@ static void battery_handler(BatteryChargeState charge_state) {
 }
 
 void bluetooth_handler(bool connected) {
-  // Vibrate briefly twice on bluetooth status change
-  vibes_double_pulse();
+  if (bluetooth_handler_init) {
+    bluetooth_handler_init = false;
+  } else {
+    // Vibrate briefly twice on bluetooth status change
+    vibes_double_pulse();
+  }
 
   // Update the display
   text_layer_set_text(s_bluetooth_layer, connected ? "BT on" : "BT off");
