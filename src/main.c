@@ -3,7 +3,7 @@
 static Window *s_main_window;
 
 // These display the actual information
-static TextLayer *s_week_year_layer;
+static TextLayer *s_week_layer;
 static TextLayer *s_battery_layer;
 static TextLayer *s_time_layer;
 static TextLayer *s_date_layer;
@@ -11,7 +11,7 @@ static TextLayer *s_day_layer;
 static TextLayer *s_bluetooth_layer;
 
 // These create some padding for the status bar text
-static Layer *s_week_year_space_layer;
+static Layer *s_week_space_layer;
 static Layer *s_battery_space_layer;
 static Layer *s_day_space_layer;
 static Layer *s_bluetooth_space_layer;
@@ -21,13 +21,13 @@ static bool bluetooth_handler_init = true;
 
 static void tick_handler(struct tm *tick_time, TimeUnits units_changed) {
   // Declare buffers to hold the formatted strings
-  static char s_week_year_buffer[12];
+  static char s_week_buffer[8];
   static char s_time_buffer[6];
   static char s_date_buffer[13];
   static char s_day_buffer[10];
   
   // Format time to strings
-  strftime(s_week_year_buffer, sizeof(s_week_year_buffer), "Week %V '%y", tick_time);
+  strftime(s_week_buffer, sizeof(s_week_buffer), "Week %V", tick_time);
   strftime(s_time_buffer, sizeof(s_time_buffer), "%H:%M", tick_time);
   strftime(s_date_buffer, sizeof(s_date_buffer), "%e %B", tick_time);
   strftime(s_day_buffer, sizeof(s_day_buffer), "%A", tick_time);
@@ -39,7 +39,7 @@ static void tick_handler(struct tm *tick_time, TimeUnits units_changed) {
   }
 
   // Update the display
-  text_layer_set_text(s_week_year_layer, s_week_year_buffer);
+  text_layer_set_text(s_week_layer, s_week_buffer);
   text_layer_set_text(s_time_layer, s_time_buffer);
   text_layer_set_text(s_date_layer, s_date_buffer);
   text_layer_set_text(s_day_layer, s_day_buffer);
@@ -81,10 +81,10 @@ static void space_layer_draw(Layer *layer, GContext *ctx) {
 }
 
 static void add_space_layers(Layer *root_layer) {
-  // Create space for week/year layer
-  s_week_year_space_layer = layer_create(GRect(0, 0, 4, 19));
-  layer_set_update_proc(s_week_year_space_layer, space_layer_draw);
-  layer_add_child(root_layer, s_week_year_space_layer);
+  // Create space for week layer
+  s_week_space_layer = layer_create(GRect(0, 0, 4, 19));
+  layer_set_update_proc(s_week_space_layer, space_layer_draw);
+  layer_add_child(root_layer, s_week_space_layer);
   
   // Create space for battery layer
   s_battery_space_layer = layer_create(GRect(140, 0, 4, 19));
@@ -111,12 +111,12 @@ static void main_window_load(Window *window) {
   GFont bitham_42_light_font = fonts_get_system_font(FONT_KEY_BITHAM_42_LIGHT);
   GFont gothic_24_font = fonts_get_system_font(FONT_KEY_GOTHIC_24);
   
-  // Create week/year layer
-  s_week_year_layer = text_layer_create(GRect(4, 0, 107, 19));
-  text_layer_set_background_color(s_week_year_layer, GColorBlack);
-  text_layer_set_text_color(s_week_year_layer, GColorWhite);
-  text_layer_set_font(s_week_year_layer, gothic_14_font);
-  layer_add_child(root_layer, text_layer_get_layer(s_week_year_layer));
+  // Create week layer
+  s_week_layer = text_layer_create(GRect(4, 0, 107, 19));
+  text_layer_set_background_color(s_week_layer, GColorBlack);
+  text_layer_set_text_color(s_week_layer, GColorWhite);
+  text_layer_set_font(s_week_layer, gothic_14_font);
+  layer_add_child(root_layer, text_layer_get_layer(s_week_layer));
 
   // Create battery layer
   s_battery_layer = text_layer_create(GRect(111, 0, 30, 19));
@@ -170,13 +170,13 @@ static void main_window_load(Window *window) {
 
 static void main_window_unload(Window *window) {
   // Destroy all space layers to free resources
-  layer_destroy(s_week_year_space_layer);
+  layer_destroy(s_week_space_layer);
   layer_destroy(s_battery_space_layer);
   layer_destroy(s_day_space_layer);
   layer_destroy(s_bluetooth_space_layer);
   
   // Destroy all layers to free resources
-  text_layer_destroy(s_week_year_layer);
+  text_layer_destroy(s_week_layer);
   text_layer_destroy(s_battery_layer);
   text_layer_destroy(s_time_layer);
   text_layer_destroy(s_date_layer);
