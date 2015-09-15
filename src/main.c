@@ -112,14 +112,14 @@ static void main_window_load(Window *window) {
   GFont gothic_24_font = fonts_get_system_font(FONT_KEY_GOTHIC_24);
   
   // Create week layer
-  s_week_layer = text_layer_create(GRect(4, 0, 107, 19));
+  s_week_layer = text_layer_create(GRect(4, 0, 100, 19));
   text_layer_set_background_color(s_week_layer, GColorBlack);
   text_layer_set_text_color(s_week_layer, GColorWhite);
   text_layer_set_font(s_week_layer, gothic_14_font);
   layer_add_child(root_layer, text_layer_get_layer(s_week_layer));
 
   // Create battery layer
-  s_battery_layer = text_layer_create(GRect(111, 0, 30, 19));
+  s_battery_layer = text_layer_create(GRect(104, 0, 36, 19));
   text_layer_set_background_color(s_battery_layer, GColorBlack);
   text_layer_set_text_color(s_battery_layer, GColorWhite);
   text_layer_set_font(s_battery_layer, gothic_14_font);
