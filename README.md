@@ -10,9 +10,9 @@ This is a simple watch face for the Pebble (both the original Pebble and the Peb
 * LEET at 13:37
 
 ## Screenshots
-![Standard watch face](http://i.imgur.com/AfL1X2P.png "Standard watch face")
-![Watch face while charging](http://i.imgur.com/U14y3BZ.png "Watch face while charging")
-![Watch face while charging and without bluetooth connection](http://i.imgur.com/1I7WWuM.png "Watch face while charging and without bluetooth connection")
+![Standard watch face](http://i.imgur.com/6UQJQYE.png "Standard watch face")
+![Watch face while charging](http://i.imgur.com/W8LZkzZ.png "Watch face while charging")
+![Watch face while charging and without bluetooth connection](http://i.imgur.com/E7gkgcy.png "Watch face while charging and without bluetooth connection")
 
 ## Installation
 1. Simply download the latest release [here](https://github.com/Naxiz/SimpleWatchFace/releases) (the `.pbw` file) and transfer it to your phone.
