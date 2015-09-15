@@ -47,11 +47,11 @@ static void tick_handler(struct tm *tick_time, TimeUnits units_changed) {
 
 static void battery_handler(BatteryChargeState charge_state) {
   // Declare buffer to hold the formatted string
-  static char s_battery_buffer[5];
+  static char s_battery_buffer[6];
   
   // Format the status to string
   if (charge_state.is_charging) {
-    snprintf(s_battery_buffer, sizeof(s_battery_buffer), "CHRG");
+    snprintf(s_battery_buffer, sizeof(s_battery_buffer), "+%d%%", charge_state.charge_percent);
   } else {
     snprintf(s_battery_buffer, sizeof(s_battery_buffer), "%d%%", charge_state.charge_percent);
   }
@@ -119,7 +119,7 @@ static void main_window_load(Window *window) {
   layer_add_child(root_layer, text_layer_get_layer(s_week_year_layer));
 
   // Create battery layer
-  s_battery_layer = text_layer_create(GRect(111, 0, 29, 19));
+  s_battery_layer = text_layer_create(GRect(111, 0, 30, 19));
   text_layer_set_background_color(s_battery_layer, GColorBlack);
   text_layer_set_text_color(s_battery_layer, GColorWhite);
   text_layer_set_font(s_battery_layer, gothic_14_font);
