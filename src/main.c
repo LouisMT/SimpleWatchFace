@@ -34,7 +34,13 @@ static void tick_handler(struct tm *tick_time, TimeUnits units_changed) {
 
   // Add some leet if necessary
   if (strcmp(s_time_buffer, "13:37") == 0) {
-    vibes_short_pulse();
+    static const uint32_t vibe_segments[] = { 100, 200, 300 };
+    VibePattern vibe_pattern = {
+      .durations = vibe_segments,
+      .num_segments = ARRAY_LENGTH(vibe_segments),
+    };
+    vibes_enqueue_custom_pattern(vibe_pattern);
+
     strncpy(s_time_buffer, "LEET!", sizeof(s_time_buffer));
   }
 
